@@ -33,9 +33,14 @@ class DataStore(context: Context) {
 
     // Workshop
 
-    val workshopFlow: Flow<Boolean> = /* TODO: Mappe den Workshop Key zu einem Flow */
+    val workshopFlow: Flow<Boolean> = dataStore.data
+        .map { preferences ->
+            preferences[WORKSHOP_KEY] ?: false
+        }
 
     suspend fun setWorkshop(enabled: Boolean) {
-        /* TODO: Erstelle den Edit-Flow */
+        dataStore.edit { preferences ->
+            preferences[WORKSHOP_KEY] = enabled
+        }
     }
 }
