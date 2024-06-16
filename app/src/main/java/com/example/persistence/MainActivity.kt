@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val isAlwaysOnScreen by dataStore.alwaysOnScreenFlow.collectAsState(initial = false)
+            val isWorkshopChecked by dataStore.workshopFlow.collectAsState(initial = false)
             val coroutineScope = rememberCoroutineScope()
 
             if (isAlwaysOnScreen) window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -86,6 +87,12 @@ class MainActivity : ComponentActivity() {
                             onAlwaysOnScreenChange = { enabled ->
                                 coroutineScope.launch {
                                     dataStore.setAlwaysOnScreen(enabled)
+                                }
+                            },
+                            isWorkshopChecked = isWorkshopChecked,
+                            onWorkshopCheckedChange = { enabled ->
+                                coroutineScope.launch {
+                                    dataStore.setWorkshop(enabled)
                                 }
                             }
                         )
@@ -133,7 +140,9 @@ class MainActivity : ComponentActivity() {
         navController: NavHostController,
         modifier: Modifier = Modifier,
         isAlwaysOnScreen: Boolean,
-        onAlwaysOnScreenChange: (Boolean) -> Unit
+        onAlwaysOnScreenChange: (Boolean) -> Unit,
+        isWorkshopChecked: Boolean,
+        onWorkshopCheckedChange: (Boolean) -> Unit
     ) {
 
         Scaffold(
@@ -162,6 +171,11 @@ class MainActivity : ComponentActivity() {
                         text = "Display Always On",
                         isChecked = isAlwaysOnScreen,
                         onCheckedChange = onAlwaysOnScreenChange
+                    )
+                    SettingsItem(
+                        text = "Workshop",
+                        isChecked = isWorkshopChecked,
+                        onCheckedChange = onWorkshopCheckedChange
                     )
                 }
             }

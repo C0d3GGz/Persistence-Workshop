@@ -17,6 +17,7 @@ class DataStore(context: Context) {
 
     companion object {
         val ALWAYS_ON_SCREEN_KEY = booleanPreferencesKey("always_on_screen")
+        val WORKSHOP_KEY = booleanPreferencesKey("workshop")
     }
 
     val alwaysOnScreenFlow: Flow<Boolean> = dataStore.data
@@ -28,5 +29,13 @@ class DataStore(context: Context) {
         dataStore.edit { preferences ->
             preferences[ALWAYS_ON_SCREEN_KEY] = enabled
         }
+    }
+
+    // Workshop
+
+    val workshopFlow: Flow<Boolean> = /* TODO: Mappe den Workshop Key zu einem Flow */
+
+    suspend fun setWorkshop(enabled: Boolean) {
+        /* TODO: Erstelle den Edit-Flow */
     }
 }
