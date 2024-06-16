@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.persistence.Datenbank.DAOs.ToDoListDao
-import com.example.persistence.Datenbank.Entities.ToDo
+import com.example.persistence.Datenbank.Entities.ListEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -14,21 +14,21 @@ class ToDoViewModel (
     private val dao : ToDoListDao
 ) : ViewModel() {
 
-    val todoList : LiveData<List<ToDo>> = dao.getPendingEntries()
-    val completedToDos : LiveData<List<ToDo>> = dao.getCompletedEntries()
+    val incompletedEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
+    val completedEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
+
+
+
     val _state = MutableStateFlow(ToDoListState())
-
-
     fun onEvent(event: ToDoListEvent) {
         when (event) {
-            // Hint: Implement Methods in the ToDoListDao that will make the corresponding change to the database
-
-            ToDoListEvent.saveToDo -> {
+            ToDoListEvent.saveNewEntry -> {
                 val name = _state.value.name
 
-                val todo = ToDo(name = name)
+                // !! Neuer ListEntry
+                val newTodo = ListEntry(name = name)
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.insertToDo(todo)
+                    // TODO: Rufe hier die Methode auf, die ein bestimmter ListEntry hinzufügt.
                 }
 
                 _state.update { it.copy(
@@ -36,21 +36,31 @@ class ToDoViewModel (
                 ) }
             }
 
-            is ToDoListEvent.DeleteToDo -> {
+            is ToDoListEvent.DeleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.deleteToDo(event.todo)
+                    //TODO: Rufe hier die Methode auf, die ein bestimmtes ListEntry löscht.
+                    // .
+                    // Hinweis:
+                    // - Mit 'event.entry' kann man auf den ListEntry, bei dem der Delete-Knopf gedrückt wurde, zugreifen
                 }
 
             }
 
-            is ToDoListEvent.completeToDo -> {
+            is ToDoListEvent.CompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.completeToDo(event.toDo.copy(completed = true))
+                    //TODO: Rufe hier die Methode, die ein bestimmtes ListEntry aktualisiert, so auf, dass der ListEntry als
+                    // erfüllt gekennzeichnet wird.
+                    // .
+                    // Hinweis:
+                    // - In Kotlin kann man mit der Methode .copy(), leicht abgeändert Kopien von Objekte erstellen (Nur für Data Class)
+                    //      Z.B:
+                    //          event.entry.copy(name = "Müll Rausbringen")
                 }
             }
-            is ToDoListEvent.uncompleteToDo -> {
+            is ToDoListEvent.UncompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    dao.uncompleteToDo(event.toDo.copy(completed = false))
+                    //TODO: Rufe hier die Methode, die ein bestimmtes ListEntry Verändert, so auf, dass es als
+                    // nicht erfüllt gekennzeichnet wird.
                 }
             }
 

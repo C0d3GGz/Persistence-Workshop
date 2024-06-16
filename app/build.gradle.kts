@@ -53,6 +53,7 @@ android {
 dependencies {
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.navigation.runtime.ktx)
     // Room Stuff
     val room_version = "2.6.1"
     implementation("androidx.room:room-ktx:$room_version")

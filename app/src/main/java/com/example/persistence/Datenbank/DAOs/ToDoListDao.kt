@@ -2,32 +2,27 @@ package com.example.persistence.Datenbank.DAOs
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.example.persistence.Datenbank.Entities.ToDo
+import com.example.persistence.Datenbank.Entities.ListEntry
 
 @Dao
 interface ToDoListDao {
-    @Delete
-    fun deleteToDo(todo : ToDo)
 
-    @Insert
-    fun insertToDo (todo : ToDo)
+    //TODO:
+    fun removeEntry(entry : ListEntry)
 
-    @Update
-    fun completeToDo(todo : ToDo)
-
-    @Update
-    fun uncompleteToDo(todo : ToDo)
+    //TODO:
+    fun addEntry (entry : ListEntry)
 
 
-    @Query("Select * from ToDo where completed = false")
-    fun getPendingEntries () : LiveData<List<ToDo>>
+    //TODO: Funktion die
+    fun changeEntry (entry : ListEntry)
 
-    @Query("Select * from ToDo where completed = true")
-    fun getCompletedEntries () : LiveData<List<ToDo>>
+
+    //TODO: Funktion, die alle Einträge zurückgibt, die noch nicht erledigt wurden
+    fun getPendingEntries () : LiveData<List<ListEntry>>
+
+    //TODO:  Funktion, die alle Einträge zurückgibt, die bereits erledigt wurden
+    fun getCompletedEntries () : LiveData<List<ListEntry>>
 
 
 
