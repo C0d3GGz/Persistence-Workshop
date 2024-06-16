@@ -32,7 +32,7 @@ fun ToDoScreen(
     viewModel: ToDoViewModel,
     modifier: Modifier
     ) {
-    val incompletedEntries by viewModel.incompletedEntries.observeAsState()
+    val incompleteEntries by viewModel.incompleteEntries.observeAsState()
     val completedToDos by viewModel.completedEntries.observeAsState()
 
     Column (
@@ -64,7 +64,7 @@ fun ToDoScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             item(){ Text(text = "Pending ToDos:") }
-            items(incompletedEntries ?: emptyList()) { entry ->
+            items(incompleteEntries ?: emptyList()) { entry ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {

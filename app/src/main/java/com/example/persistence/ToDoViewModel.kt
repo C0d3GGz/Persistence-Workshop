@@ -14,21 +14,22 @@ class ToDoViewModel (
     private val dao : ToDoListDao
 ) : ViewModel() {
 
-    val incompletedEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
-    val completedEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
+    val incompleteEntries : LiveData<List<ListEntry>> = dao.getPendingEntries()
+    val completedEntries : LiveData<List<ListEntry>> = dao.getCompletedEntries()
 
 
 
     val _state = MutableStateFlow(ToDoListState())
     fun onEvent(event: ToDoListEvent) {
         when (event) {
+
             ToDoListEvent.saveNewEntry -> {
                 val name = _state.value.name
-
-                // !! Neuer ListEntry
-                val newTodo = ListEntry(name = name)
+                // !!!!!! Neuer ListEntry !!!!!!!!!!
+                val newEntry = ListEntry(taskID = 0, name = name)
                 viewModelScope.launch(Dispatchers.IO) {
-                    // TODO: Rufe hier die Methode auf, die ein bestimmter ListEntry hinzufügt.
+                    // TODO: Rufe hier die Methode auf, die ein bestimmter ListEntry hinzufügt
+                    //  Hinweis: Innerhalb vom ToDoViewModel kann man mit 'dao.METHODE()' auf die ToDoListDao Methoden zugreifen
                 }
 
                 _state.update { it.copy(
@@ -39,27 +40,25 @@ class ToDoViewModel (
             is ToDoListEvent.DeleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     //TODO: Rufe hier die Methode auf, die ein bestimmtes ListEntry löscht.
-                    // .
-                    // Hinweis:
-                    // - Mit 'event.entry' kann man auf den ListEntry, bei dem der Delete-Knopf gedrückt wurde, zugreifen
+                    // Hinweis: Mit 'event.entry' kann man auf den ListEntry, bei dem der Delete-Knopf gedrückt wurde, zugreifen
                 }
 
             }
 
             is ToDoListEvent.CompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    //TODO: Rufe hier die Methode, die ein bestimmtes ListEntry aktualisiert, so auf, dass der ListEntry als
+                    //TODO: Rufe hier die Methode, die ein bestimmtes Eintrag aktualisiert, so auf, dass der Eintrag als
                     // erfüllt gekennzeichnet wird.
-                    // .
                     // Hinweis:
-                    // - In Kotlin kann man mit der Methode .copy(), leicht abgeändert Kopien von Objekte erstellen (Nur für Data Class)
+                    // - In Kotlin kann man mit der Methode .copy(), Kopien von Objekte erstellen, wo nur einzelne Eigenschaften
+                    //   verändert werden
                     //      Z.B:
                     //          event.entry.copy(name = "Müll Rausbringen")
                 }
             }
             is ToDoListEvent.UncompleteEntry -> {
                 viewModelScope.launch(Dispatchers.IO) {
-                    //TODO: Rufe hier die Methode, die ein bestimmtes ListEntry Verändert, so auf, dass es als
+                    //TODO: Rufe hier die Methode, die ein bestimmtes Eintrag aktualisiert, so auf, dass der Eintrag als
                     // nicht erfüllt gekennzeichnet wird.
                 }
             }
